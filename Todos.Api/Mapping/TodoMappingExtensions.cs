@@ -1,6 +1,8 @@
 using Todos.Api.DTOs;
 using Todos.Api.Models;
 
+namespace Todo.Api.Mapping;
+
 public static class TodoMappingExtensions
 {
     public static TodoModel MapToTodoModel(this TodoCreateDto todo)
@@ -17,8 +19,18 @@ public static class TodoMappingExtensions
     {
         return new TodoModel()
         {
-            Id = 0,
+            Id = todo.Id,
             Title = todo.Title?.Trim() ?? "",
+            IsComplete = todo.IsComplete
+        };
+    }
+
+    public static TodoGetDto MapToGetDto(this TodoModel todo)
+    {
+        return new TodoGetDto()
+        {
+            Id = todo.Id,
+            Title = todo.Title,
             IsComplete = todo.IsComplete
         };
     }
