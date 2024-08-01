@@ -4,7 +4,7 @@ namespace Todos.Api.Repositories;
 
 public class TodoRepository : ITodoRepository
 {
-    static int id = 4;
+    private static int _id = 4;
 
     private readonly List<TodoModel> _todos = new()
     {
@@ -42,7 +42,7 @@ public class TodoRepository : ITodoRepository
 
     public async Task<TodoModel> CreateAsync(TodoModel todo)
     {
-        todo.Id = id++;
+        todo.Id = _id++;
         _todos.Add(todo);
 
         return await Task.FromResult(todo);
@@ -69,7 +69,5 @@ public class TodoRepository : ITodoRepository
     public async Task<bool> ExistsAsync(int id)
     {
         return await Task.FromResult(_todos.Exists(t => t.Id == id));
-        // return await Task.FromResult(_todos.Any(t => t.Id == id));
-        // return await Task.FromResult(_todos.FindIndex(t => t.Id == id) > -1 ? true : false);
     }
 }
