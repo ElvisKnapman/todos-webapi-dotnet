@@ -4,11 +4,11 @@ namespace Todos.Api.Repositories;
 
 public interface ITodoRepository
 {
-    Task<IEnumerable<TodoModel>> GetAsync();
+    Task<IEnumerable<TodoModel>> GetAllAsync();
 
     Task<TodoModel?> GetByIdAsync(int id);
 
-    Task<bool> DeleteAsync(int id);
+    Task<bool> DeleteByIdAsync(int id);
 
     Task<TodoModel> CreateAsync(TodoModel todo);
 

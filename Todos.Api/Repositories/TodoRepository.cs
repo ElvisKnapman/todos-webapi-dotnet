@@ -28,7 +28,7 @@ public class TodoRepository : ITodoRepository
         }
     };
 
-    public async Task<IEnumerable<TodoModel>> GetAsync()
+    public async Task<IEnumerable<TodoModel>> GetAllAsync()
     {
         return await Task.FromResult(_todos.AsReadOnly());
     }
@@ -48,9 +48,10 @@ public class TodoRepository : ITodoRepository
         return await Task.FromResult(todo);
     }
 
-    public async Task<bool> DeleteAsync(int id)
+    public async Task<bool> DeleteByIdAsync(int id)
     {
-        var index = _todos.FindIndex(t => t.Id == id);
+        TodoModel? todo = _todos.FirstOrDefault(t => t.Id == id);
+        int index = _todos.FindIndex(t => t.Id == id);
 
         if (index == -1)
         {
@@ -61,13 +62,26 @@ public class TodoRepository : ITodoRepository
         return await Task.FromResult(true);
     }
 
-    public Task<bool> UpdateAsync(int id, TodoModel todo)
+    public Task<bool> UpdateAsync(TodoModel todo)
     {
-        throw new NotImplementedException();
+        int index = _todos.FindIndex(t => t.Id == todo.Id);
+
+        if (index == -1)
+        {
+            return Task.FromResult(false);
+        }
+
+        _todos[index] = todo;
+        return Task.FromResult(true);
     }
 
     public async Task<bool> ExistsAsync(int id)
     {
         return await Task.FromResult(_todos.Exists(t => t.Id == id));
+    }
+
+    public Task<bool> UpdateAsync(int id, TodoModel todo)
+    {
+        throw new NotImplementedException();
     }
 }
