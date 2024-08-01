@@ -79,9 +79,4 @@ public class TodoRepository : ITodoRepository
     {
         return await Task.FromResult(_todos.Exists(t => t.Id == id));
     }
-
-    public Task<bool> UpdateAsync(int id, TodoModel todo)
-    {
-        throw new NotImplementedException();
-    }
 }

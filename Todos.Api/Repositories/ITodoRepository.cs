@@ -12,7 +12,7 @@ public interface ITodoRepository
 
     Task<TodoModel> CreateAsync(TodoModel todo);
 
-    Task<bool> UpdateAsync(int id, TodoModel todo);
+    Task<bool> UpdateAsync(TodoModel todo);
 
     Task<bool> ExistsAsync(int id);
 }
