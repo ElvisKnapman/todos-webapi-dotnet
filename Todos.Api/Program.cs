@@ -1,6 +1,4 @@
 using Todos.Api;
-using Todos.Api.Repositories;
-using Todos.Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,9 +9,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// builder.Services.AddInjections();
-builder.Services.AddSingleton<ITodoRepository, TodoRepository>();
-builder.Services.AddScoped<ITodoService, TodoService>();
+// Custom application services
+builder.Services.AddInjections();
+builder.Services.AddEFCore(builder);
 
 var app = builder.Build();
 

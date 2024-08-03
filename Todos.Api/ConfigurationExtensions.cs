@@ -1,7 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Todos.Api.Data;
 using Todos.Api.Repositories;
 using Todos.Api.Services;
 
@@ -13,6 +11,16 @@ namespace Todos.Api
         {
             services.AddSingleton<ITodoRepository, TodoRepository>();
             services.AddScoped<ITodoService, TodoService>();
+
+            return services;
+        }
+
+        public static IServiceCollection AddEFCore(this IServiceCollection services, WebApplicationBuilder builder)
+        {
+            services.AddDbContext<ApplicationDbContext>(options =>
+            {
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+            });
 
             return services;
         }

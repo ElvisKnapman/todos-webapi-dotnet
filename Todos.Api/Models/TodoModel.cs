@@ -10,6 +10,10 @@ public class TodoModel
     public int Id { get; set; }
     public string Title { get; set; } = string.Empty;
     public bool IsComplete { get; set; }
-    public DateTime CreatedDate { get; set; }
-    public DateTime LastModifiedDate { get; set; }
+
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public DateTime CreatedAt { get; set; }
+
+    [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+    public DateTime UpdatedAt { get; set; }
 }
