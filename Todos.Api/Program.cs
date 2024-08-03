@@ -1,4 +1,6 @@
+using Microsoft.EntityFrameworkCore;
 using Todos.Api;
+using Todos.Api.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 

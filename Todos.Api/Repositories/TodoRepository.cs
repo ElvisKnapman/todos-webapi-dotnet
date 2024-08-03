@@ -1,82 +1,69 @@
-﻿using Todos.Api.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using Todos.Api.Data;
+using Todos.Api.Models;
 
 namespace Todos.Api.Repositories;
 
 public class TodoRepository : ITodoRepository
 {
-    private static int _id = 4;
+    private readonly ApplicationDbContext _context;
 
-    private readonly List<TodoModel> _todos = new()
+    public TodoRepository(ApplicationDbContext context)
     {
-        new TodoModel()
-        {
-            Id = 1,
-            Title = "Todo",
-            IsComplete = true,
-        },
-        new TodoModel()
-        {
-            Id =2,
-            Title = "Another Todo",
-            IsComplete = false
-        },
-        new TodoModel()
-        {
-            Id =3,
-            Title = "Your mom",
-            IsComplete = true
-        }
-    };
+        _context = context;
+    }
 
     public async Task<IEnumerable<TodoModel>> GetAllAsync()
     {
-        return await Task.FromResult(_todos.AsReadOnly());
+        return await _context.Todos.ToListAsync();
     }
 
     public async Task<TodoModel?> GetByIdAsync(int id)
     {
-        TodoModel? todo = _todos.Find(x => x.Id == id);
-
-        return await Task.FromResult(todo);
+        TodoModel? todo = await _context.Todos.FindAsync(id);
+        return todo;
     }
 
     public async Task<TodoModel> CreateAsync(TodoModel todo)
     {
-        todo.Id = _id++;
-        _todos.Add(todo);
+        _context.Todos.Add(todo);
+        await _context.SaveChangesAsync();
 
-        return await Task.FromResult(todo);
+        return todo;
     }
 
     public async Task<bool> DeleteByIdAsync(int id)
     {
-        TodoModel? todo = _todos.FirstOrDefault(t => t.Id == id);
-        int index = _todos.FindIndex(t => t.Id == id);
+        TodoModel? todoToDelete = await GetByIdAsync(id);
 
-        if (index == -1)
+        if (todoToDelete is null)
         {
-            return await Task.FromResult(false);
+            return false;
         }
 
-        _todos.RemoveAt(index);
-        return await Task.FromResult(true);
+        _context.Todos.Remove(todoToDelete);
+        await _context.SaveChangesAsync();
+
+        return true;
     }
 
-    public Task<bool> UpdateAsync(TodoModel todo)
+    public async Task<bool> UpdateAsync(TodoModel todo)
     {
-        int index = _todos.FindIndex(t => t.Id == todo.Id);
+        bool exists = await ExistsAsync(todo.Id);
 
-        if (index == -1)
+        if (!exists)
         {
-            return Task.FromResult(false);
+            return false;
         }
 
-        _todos[index] = todo;
-        return Task.FromResult(true);
+        _context.Todos.Update(todo);
+        int recordsUpdated = await _context.SaveChangesAsync();
+
+        return recordsUpdated > 0;
     }
 
     public async Task<bool> ExistsAsync(int id)
     {
-        return await Task.FromResult(_todos.Exists(t => t.Id == id));
+        return await _context.Todos.AsNoTracking().FirstOrDefaultAsync(t => t.Id == id) != null;
     }
 }

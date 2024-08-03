@@ -9,7 +9,7 @@ namespace Todos.Api
     {
         public static IServiceCollection AddInjections(this IServiceCollection services)
         {
-            services.AddSingleton<ITodoRepository, TodoRepository>();
+            services.AddScoped<ITodoRepository, TodoRepository>();
             services.AddScoped<ITodoService, TodoService>();
 
             return services;

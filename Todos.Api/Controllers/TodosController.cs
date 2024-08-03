@@ -6,7 +6,7 @@ using Todos.Api.Services;
 
 namespace Todos.Api.Controllers;
 
-[Route("api/[controller]")]
+[Route("api/todos")]
 [ApiController]
 public class TodosController : ControllerBase
 {
@@ -52,24 +52,22 @@ public class TodosController : ControllerBase
     [HttpPut("{id}")]
     public async Task<IActionResult> Update([FromRoute] int id, [FromBody] TodoUpdateDto updatedTodo)
     {
-        // Confirm id of todo being updated matches the DTO id
+        // Confirm route id matches the DTO id
         if (id != updatedTodo.Id)
         {
             return BadRequest();
         }
 
-        TodoModel todo = updatedTodo.MapToTodoModel();
+        TodoModel todoToUpdate = updatedTodo.MapToTodoModel();
 
-        bool updated = await _todoService.UpdateAsync(todo);
+        bool updated = await _todoService.UpdateAsync(todoToUpdate);
 
         if (!updated)
         {
             return NotFound();
         }
 
-        TodoGetDto response = todo.MapToGetDto();
-
-        return Ok(response);
+        return NoContent();
     }
 
     [HttpDelete("{id}")]
@@ -77,6 +75,6 @@ public class TodosController : ControllerBase
     {
         var deleted = await _todoService.DeleteByIdAsync(id);
 
-        return deleted ? Ok() : NotFound();
+        return deleted ? NoContent() : NotFound();
     }
 }

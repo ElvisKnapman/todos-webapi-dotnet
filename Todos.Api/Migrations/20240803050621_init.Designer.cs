@@ -12,7 +12,7 @@ using Todos.Api.Data;
 namespace Todos.Api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240803021727_init")]
+    [Migration("20240803050621_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -34,7 +34,6 @@ namespace Todos.Api.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsComplete")
@@ -42,10 +41,10 @@ namespace Todos.Api.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
