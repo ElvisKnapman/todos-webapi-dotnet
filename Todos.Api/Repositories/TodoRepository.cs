@@ -49,13 +49,6 @@ public class TodoRepository : ITodoRepository
 
     public async Task<bool> UpdateAsync(TodoModel todo)
     {
-        bool exists = await ExistsAsync(todo.Id);
-
-        if (!exists)
-        {
-            return false;
-        }
-
         _context.Todos.Update(todo);
         int recordsUpdated = await _context.SaveChangesAsync();
 
@@ -64,6 +57,6 @@ public class TodoRepository : ITodoRepository
 
     public async Task<bool> ExistsAsync(int id)
     {
-        return await _context.Todos.AsNoTracking().FirstOrDefaultAsync(t => t.Id == id) != null;
+        return await _context.Todos.FirstOrDefaultAsync(t => t.Id == id) != null;
     }
 }

@@ -58,13 +58,22 @@ public class TodosController : ControllerBase
             return BadRequest();
         }
 
-        TodoModel todoToUpdate = updatedTodo.MapToTodoModel();
+        // Get The existing entity
+        TodoModel? existingTodo = await _todoService.GetByIdAsync(id);
 
-        bool updated = await _todoService.UpdateAsync(todoToUpdate);
-
-        if (!updated)
+        if (existingTodo is null)
         {
             return NotFound();
+        }
+
+        // Map the changes to the existing tracked entity
+        existingTodo = existingTodo.MapUpdatedTodo(updatedTodo);
+
+        bool wasUpdateSuccessful = await _todoService.UpdateAsync(existingTodo);
+
+        if (!wasUpdateSuccessful)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError);
         }
 
         return NoContent();
