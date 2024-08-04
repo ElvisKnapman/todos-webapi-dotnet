@@ -15,14 +15,14 @@ public static class TodoMappingExtensions
         };
     }
 
-    public static TodoModel MapToTodoModel(this TodoUpdateDto todo)
+    public static TodoModel MapUpdatedTodo(this TodoModel existingTodo, TodoUpdateDto updatedTodo)
     {
-        return new TodoModel()
-        {
-            Id = todo.Id,
-            Title = todo.Title?.Trim() ?? "",
-            IsComplete = todo.IsComplete
-        };
+
+        existingTodo.Id = updatedTodo.Id;
+        existingTodo.Title = updatedTodo.Title?.Trim() ?? "";
+        existingTodo.IsComplete = updatedTodo.IsComplete;
+
+        return existingTodo;
     }
 
     public static TodoGetDto MapToGetDto(this TodoModel todo)
