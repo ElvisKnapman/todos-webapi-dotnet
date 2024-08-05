@@ -1,4 +1,4 @@
-using Todos.Api.DTOs;
+using Todos.Api.DTOs.Todo;
 using Todos.Api.Models;
 
 namespace Todo.Api.Mapping;

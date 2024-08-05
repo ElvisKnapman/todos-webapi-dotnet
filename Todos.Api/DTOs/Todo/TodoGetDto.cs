@@ -1,4 +1,4 @@
-﻿namespace Todos.Api.DTOs;
+﻿namespace Todos.Api.DTOs.Todo;
 
 public class TodoGetDto
 {
