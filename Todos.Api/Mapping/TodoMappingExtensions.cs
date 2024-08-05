@@ -21,6 +21,7 @@ public static class TodoMappingExtensions
         existingTodo.Id = updatedTodo.Id;
         existingTodo.Title = updatedTodo.Title?.Trim() ?? "";
         existingTodo.IsComplete = updatedTodo.IsComplete;
+        existingTodo.UpdatedAt = DateTime.Now;
 
         return existingTodo;
     }

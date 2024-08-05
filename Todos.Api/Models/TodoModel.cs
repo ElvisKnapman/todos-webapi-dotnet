@@ -14,4 +14,7 @@ public class TodoModel
     public bool IsComplete { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.Now;
     public DateTime UpdatedAt { get; set; } = DateTime.Now;
+
+    public int? UserId { get; set; }
+    public UserModel? User { get; set; }
 }
