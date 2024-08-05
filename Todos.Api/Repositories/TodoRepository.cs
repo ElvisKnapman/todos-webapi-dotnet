@@ -15,12 +15,12 @@ public class TodoRepository : ITodoRepository
 
     public async Task<IEnumerable<TodoModel>> GetAllAsync()
     {
-        return await _context.Todos.ToListAsync();
+        return await _context.Todos.AsNoTracking().ToListAsync();
     }
 
     public async Task<TodoModel?> GetByIdAsync(int id)
     {
-        TodoModel? todo = await _context.Todos.FindAsync(id);
+        TodoModel? todo = await _context.Todos.AsNoTracking().FirstOrDefaultAsync(t => t.Id == id);
         return todo;
     }
 
