@@ -23,7 +23,9 @@ public class TodosController : ControllerBase
     public async Task<IActionResult> GetAll()
     {
         IEnumerable<TodoModel> todos = await _todoService.GetAllAsync();
-        return Ok(todos);
+        IEnumerable<TodoGetDto> response = todos.Select(t => t.MapToGetDto());
+
+        return Ok(response);
     }
 
     [HttpGet("{id}")]
@@ -36,7 +38,8 @@ public class TodosController : ControllerBase
             return NotFound();
         }
 
-        return Ok(todo);
+        TodoGetDto response = todo.MapToGetDto();
+        return Ok(response);
     }
 
     [HttpPost]
@@ -46,7 +49,9 @@ public class TodosController : ControllerBase
 
         todo = await _todoService.CreateAsync(todo);
 
-        return CreatedAtAction(nameof(GetById), new { id = todo.Id }, todo);
+        TodoGetDto response = todo.MapToGetDto();
+
+        return CreatedAtAction(nameof(GetById), new { id = response.Id }, response);
     }
 
     [HttpPut("{id}")]

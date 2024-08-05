@@ -11,7 +11,8 @@ public static class TodoMappingExtensions
         {
             Id = 0,
             Title = todo.Title?.Trim() ?? "",
-            IsComplete = todo.IsComplete
+            IsComplete = todo.IsComplete,
+            UserId = todo.UserId
         };
     }
 
