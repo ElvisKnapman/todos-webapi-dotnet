@@ -87,8 +87,8 @@ public class TodosController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete([FromRoute] int id)
     {
-        var deleted = await _todoService.DeleteByIdAsync(id);
+        bool wasDeleted = await _todoService.DeleteByIdAsync(id);
 
-        return deleted ? NoContent() : NotFound();
+        return wasDeleted ? NoContent() : NotFound();
     }
 }
