@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Todos.Api.Data;
 using Todos.Api.Models;
+using Todos.Api.Services;
 
 namespace Todos.Api.Repositories;
 
@@ -22,6 +23,11 @@ public class TodoRepository : ITodoRepository
     {
         TodoModel? todo = await _context.Todos.AsNoTracking().FirstOrDefaultAsync(t => t.Id == id);
         return todo;
+    }
+
+    public async Task<IEnumerable<TodoModel>> GetAllUserTodosAsync(int userId)
+    {
+        return await _context.Todos.Where(t => t.UserId == userId).ToListAsync();
     }
 
     public async Task<TodoModel> CreateAsync(TodoModel todo)

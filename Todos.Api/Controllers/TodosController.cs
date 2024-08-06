@@ -12,11 +12,13 @@ public class TodosController : ControllerBase
 {
     private readonly ILogger<TodosController> _logger;
     private readonly ITodoService _todoService;
+    private readonly IUserService _userService;
 
-    public TodosController(ILogger<TodosController> logger, ITodoService todoService)
+    public TodosController(ILogger<TodosController> logger, ITodoService todoService, IUserService userService)
     {
         _logger = logger;
         _todoService = todoService;
+        _userService = userService;
     }
 
     [HttpGet]
@@ -46,6 +48,13 @@ public class TodosController : ControllerBase
     public async Task<IActionResult> Create([FromBody] TodoCreateDto todoToCreate)
     {
         TodoModel todo = todoToCreate.MapToTodoModel();
+
+        bool userExists = await _userService.UserExistsAsync(todo.UserId);
+
+        if (!userExists)
+        {
+            return BadRequest();
+        }
 
         todo = await _todoService.CreateAsync(todo);
 

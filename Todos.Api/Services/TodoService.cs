@@ -16,6 +16,8 @@ public class TodoService : ITodoService
 
     public async Task<TodoModel?> GetByIdAsync(int id) => await _todoRepository.GetByIdAsync(id);
 
+    public async Task<IEnumerable<TodoModel>> GetAllUserTodosAsync(int userId) => await _todoRepository.GetAllUserTodosAsync(userId);
+
     public async Task<TodoModel> CreateAsync(TodoModel todo) => await _todoRepository.CreateAsync(todo);
 
     public async Task<bool> UpdateAsync(TodoModel todo) => await _todoRepository.UpdateAsync(todo);
