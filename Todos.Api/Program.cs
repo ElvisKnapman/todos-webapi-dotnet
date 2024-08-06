@@ -1,6 +1,4 @@
-using Microsoft.EntityFrameworkCore;
 using Todos.Api;
-using Todos.Api.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +21,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseRequestLogger();
 
 app.UseHttpsRedirection();
 

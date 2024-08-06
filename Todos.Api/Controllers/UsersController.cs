@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Todos.Api.DTOs.Todo;
 using Todos.Api.DTOs.User;
 using Todos.Api.Mapping;
 using Todos.Api.Models;
@@ -12,11 +13,15 @@ namespace Todos.Api.Controllers
     {
         private readonly ILogger<UsersController> _logger;
         private readonly IUserService _userService;
+        private readonly ITodoService _todoService;
 
-        public UsersController(ILogger<UsersController> logger, IUserService userService)
+        public UsersController(ILogger<UsersController> logger,
+        IUserService userService,
+        ITodoService todoService)
         {
             _logger = logger;
             _userService = userService;
+            _todoService = todoService;
         }
 
         [HttpGet]
@@ -40,6 +45,24 @@ namespace Todos.Api.Controllers
             }
 
             UserGetDto response = user.MapToGetDto();
+            return Ok(response);
+        }
+
+        [HttpGet("{id}/todos")]
+        public async Task<IActionResult> GetAllUserTodos([FromRoute] int id)
+        {
+            bool userExists = await _userService.UserExistsAsync(id);
+
+            if (!userExists)
+            {
+                return BadRequest();
+            }
+
+            IEnumerable<TodoModel> todos = await _todoService.GetAllUserTodosAsync(id);
+
+            // If user exists, map the todos to the response DTO
+            IEnumerable<TodoGetDto> response = todos.Select(t => t.MapToGetDto());
+
             return Ok(response);
         }
 
