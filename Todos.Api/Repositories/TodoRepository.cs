@@ -57,6 +57,6 @@ public class TodoRepository : ITodoRepository
 
     public async Task<bool> ExistsAsync(int id)
     {
-        return await _context.Todos.FirstOrDefaultAsync(t => t.Id == id) != null;
+        return await _context.Todos.AsNoTracking().FirstOrDefaultAsync(t => t.Id == id) != null;
     }
 }

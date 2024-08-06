@@ -1,7 +1,7 @@
 using Todos.Api.DTOs.Todo;
 using Todos.Api.Models;
 
-namespace Todo.Api.Mapping;
+namespace Todos.Api.Mapping;
 
 public static class TodoMappingExtensions
 {

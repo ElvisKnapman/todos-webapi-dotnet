@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Todo.Api.Mapping;
-using Todos.Api.DTOs;
+using Todos.Api.DTOs.Todo;
+using Todos.Api.Mapping;
 using Todos.Api.Models;
 using Todos.Api.Services;
 
@@ -85,7 +85,7 @@ public class TodosController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public async Task<IActionResult> Delete(int id)
+    public async Task<IActionResult> Delete([FromRoute] int id)
     {
         var deleted = await _todoService.DeleteByIdAsync(id);
 
