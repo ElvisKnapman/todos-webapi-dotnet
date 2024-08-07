@@ -28,12 +28,12 @@ public class TodoRepository : ITodoRepository
         return await _context.Todos.Where(t => t.UserId == userId).ToListAsync();
     }
 
-    public async Task<TodoModel> CreateAsync(TodoModel todo)
+    public async Task<bool> CreateAsync(TodoModel todo)
     {
         _context.Todos.Add(todo);
-        await _context.SaveChangesAsync();
+        int recordsUpdated = await _context.SaveChangesAsync();
 
-        return todo;
+        return recordsUpdated > 0;
     }
 
     public async Task<bool> DeleteAsync(TodoModel todo)
