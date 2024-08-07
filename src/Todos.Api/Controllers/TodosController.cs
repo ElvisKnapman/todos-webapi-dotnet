@@ -49,14 +49,21 @@ public class TodosController : ControllerBase
     {
         TodoModel todo = todoToCreate.MapToTodoModel();
 
+        // Verify a user exists with the ID supplied in the todo DTO
         bool userExists = await _userService.UserExistsAsync(todo.UserId);
 
         if (!userExists)
         {
-            return BadRequest();
+            return NotFound();
         }
 
-        todo = await _todoService.CreateAsync(todo);
+        bool wasCreated = await _todoService.CreateAsync(todo);
+
+        // If creation failed, error happened on server/in database
+        if (!wasCreated)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError);
+        }
 
         TodoGetDto response = todo.MapToGetDto();
 
