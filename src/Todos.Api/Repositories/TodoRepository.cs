@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Todos.Api.Data;
 using Todos.Api.Models;
-using Todos.Api.Services;
 
 namespace Todos.Api.Repositories;
 
@@ -21,8 +20,7 @@ public class TodoRepository : ITodoRepository
 
     public async Task<TodoModel?> GetByIdAsync(int id)
     {
-        TodoModel? todo = await _context.Todos.AsNoTracking().FirstOrDefaultAsync(t => t.Id == id);
-        return todo;
+        return await _context.Todos.AsNoTracking().FirstOrDefaultAsync(t => t.Id == id);
     }
 
     public async Task<IEnumerable<TodoModel>> GetAllUserTodosAsync(int userId)
@@ -38,19 +36,12 @@ public class TodoRepository : ITodoRepository
         return todo;
     }
 
-    public async Task<bool> DeleteByIdAsync(int id)
+    public async Task<bool> DeleteAsync(TodoModel todo)
     {
-        TodoModel? todoToDelete = await GetByIdAsync(id);
+        _context.Todos.Remove(todo);
+        int recordsUpdated = await _context.SaveChangesAsync();
 
-        if (todoToDelete is null)
-        {
-            return false;
-        }
-
-        _context.Todos.Remove(todoToDelete);
-        await _context.SaveChangesAsync();
-
-        return true;
+        return recordsUpdated > 0;
     }
 
     public async Task<bool> UpdateAsync(TodoModel todo)

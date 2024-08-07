@@ -22,5 +22,5 @@ public class TodoService : ITodoService
 
     public async Task<bool> UpdateAsync(TodoModel todo) => await _todoRepository.UpdateAsync(todo);
 
-    public async Task<bool> DeleteByIdAsync(int id) => await _todoRepository.DeleteByIdAsync(id);
+    public async Task<bool> DeleteAsync(TodoModel todo) => await _todoRepository.DeleteAsync(todo);
 }

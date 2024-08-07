@@ -8,6 +8,6 @@ public interface ITodoService
     Task<TodoModel?> GetByIdAsync(int id);
     Task<IEnumerable<TodoModel>> GetAllUserTodosAsync(int userId);
     Task<TodoModel> CreateAsync(TodoModel todo);
-    Task<bool> DeleteByIdAsync(int id);
+    Task<bool> DeleteAsync(TodoModel todo);
     Task<bool> UpdateAsync(TodoModel todo);
 }

@@ -96,8 +96,15 @@ public class TodosController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete([FromRoute] int id)
     {
-        bool wasDeleted = await _todoService.DeleteByIdAsync(id);
+        TodoModel? todo = await _todoService.GetByIdAsync(id);
 
-        return wasDeleted ? NoContent() : NotFound();
+        if (todo is null)
+        {
+            return NotFound();
+        }
+
+        bool wasDeleted = await _todoService.DeleteAsync(todo);
+
+        return wasDeleted ? NoContent() : StatusCode(StatusCodes.Status500InternalServerError);
     }
 }
