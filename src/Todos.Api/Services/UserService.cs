@@ -11,10 +11,10 @@ public class UserService : IUserService
         _userRepository = userRepository;
     }
 
-    public async Task<UserModel> CreateAsync(UserModel user) => await _userRepository.CreateAsync(user);
     public async Task<IEnumerable<UserModel>> GetAllAsync() => await _userRepository.GetAllAsync();
     public async Task<UserModel?> GetByIdAsync(int id) => await _userRepository.GetByIdAsync(id);
+    public async Task<bool> CreateAsync(UserModel user) => await _userRepository.CreateAsync(user);
     public async Task<bool> UpdateAsync(UserModel user) => await _userRepository.UpdateAsync(user);
-    public async Task<bool> DeleteByIdAsync(int id) => await _userRepository.DeleteByIdAsync(id);
+    public async Task<bool> DeleteAsync(UserModel user) => await _userRepository.DeleteAsync(user);
     public async Task<bool> UserExistsAsync(int userId) => await _userRepository.ExistsAsync(userId);
 }

@@ -73,7 +73,12 @@ namespace Todos.Api.Controllers
 
             UserModel user = userToCreate.MapToUserModel();
 
-            user = await _userService.CreateAsync(user);
+            bool wasCreated = await _userService.CreateAsync(user);
+
+            if (!wasCreated)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
 
             UserGetDto response = user.MapToGetDto();
 
@@ -117,9 +122,16 @@ namespace Todos.Api.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
-            bool wasDeleted = await _userService.DeleteByIdAsync(id);
+            UserModel? user = await _userService.GetByIdAsync(id);
 
-            return wasDeleted ? NoContent() : NotFound();
+            if (user is null)
+            {
+                return NotFound();
+            }
+
+            bool wasDeleted = await _userService.DeleteAsync(user);
+
+            return wasDeleted ? NoContent() : StatusCode(StatusCodes.Status500InternalServerError);
         }
     }
 }
