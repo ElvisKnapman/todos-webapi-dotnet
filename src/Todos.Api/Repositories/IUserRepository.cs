@@ -7,13 +7,11 @@ public interface IUserRepository
 
     Task<UserModel?> GetByIdAsync(int id);
 
-    //Task<IEnumerable<TodoModel>> GetAllUserTodosAsync(int userId);
-
-    Task<UserModel> CreateAsync(UserModel user);
+    Task<bool> CreateAsync(UserModel user);
 
     Task<bool> UpdateAsync(UserModel user);
 
-    Task<bool> DeleteByIdAsync(int id);
+    Task<bool> DeleteAsync(UserModel user);
 
     Task<bool> ExistsAsync(int id);
 }

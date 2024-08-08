@@ -14,34 +14,29 @@ public class UserRepository : IUserRepository
 
     public async Task<IEnumerable<UserModel>> GetAllAsync()
     {
+        // Entity change tracking is not needed here
         return await _context.Users.AsNoTracking().ToListAsync();
     }
 
     public async Task<UserModel?> GetByIdAsync(int id)
     {
-        return await _context.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Id == id);
+        return await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
     }
 
-    public async Task<UserModel> CreateAsync(UserModel user)
+    public async Task<bool> CreateAsync(UserModel user)
     {
         _context.Users.Add(user);
-        await _context.SaveChangesAsync();
+        int recordsUpdated = await _context.SaveChangesAsync();
 
-        return user;
+        return recordsUpdated > 0;
     }
 
-    public async Task<bool> DeleteByIdAsync(int id)
+    public async Task<bool> DeleteAsync(UserModel user)
     {
-        UserModel? userToDelete = await GetByIdAsync(id);
+        _context.Users.Remove(user);
+        int recordsUpdated = await _context.SaveChangesAsync();
 
-        if (userToDelete is null)
-        {
-            return false;
-        }
-
-        _context.Users.Remove(userToDelete);
-        await _context.SaveChangesAsync();
-        return true;
+        return recordsUpdated > 0;
     }
 
     public async Task<bool> UpdateAsync(UserModel user)
@@ -54,6 +49,7 @@ public class UserRepository : IUserRepository
 
     public async Task<bool> ExistsAsync(int id)
     {
+        // Entity change tracking is not needed here
         return await _context.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Id == id) != null;
     }
 }
