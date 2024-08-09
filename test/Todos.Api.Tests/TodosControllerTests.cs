@@ -27,7 +27,7 @@ public class TodosControllerTests
         // Arrange
         IEnumerable<TodoModel> todos = Enumerable.Empty<TodoModel>();
         _todoService.GetAllAsync().Returns(todos);
-        var response = todos.Select(t => t.MapToGetDto());
+        var response = todos.Select(t => t.ToGetDto());
 
         // Act
         var result = (OkObjectResult)await _sut.GetAll();
@@ -58,7 +58,7 @@ public class TodosControllerTests
             }
         };
         _todoService.GetAllAsync().Returns(todos);
-        IEnumerable<TodoGetDto> response = todos.Select(t => t.MapToGetDto());
+        IEnumerable<TodoGetDto> response = todos.Select(t => t.ToGetDto());
 
         // Act
         var result = (OkObjectResult)await _sut.GetAll();
@@ -80,7 +80,7 @@ public class TodosControllerTests
             IsComplete = false
         };
         _todoService.GetByIdAsync(id).Returns(todo);
-        TodoGetDto? response = todo.MapToGetDto();
+        TodoGetDto? response = todo.ToGetDto();
 
         // Act
         var result = (OkObjectResult)await _sut.GetById(id);
@@ -134,14 +134,14 @@ public class TodosControllerTests
             UserId = 1
         };
 
-        TodoModel todo = todoToCreate.MapToTodoModel();
+        TodoModel todo = todoToCreate.ToTodoModel();
 
         _userService.UserExistsAsync(todo.UserId).Returns(true);
 
         _todoService.CreateAsync(Arg.Any<TodoModel>()).Returns(true);
         //_todoService.CreateAsync(Arg.Do<TodoModel>(t => todo = t)).Returns(true);
 
-        TodoGetDto response = todo.MapToGetDto();
+        TodoGetDto response = todo.ToGetDto();
 
         // Act
         var result = (CreatedAtActionResult)await _sut.Create(todoToCreate);
