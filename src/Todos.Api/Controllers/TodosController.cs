@@ -59,10 +59,9 @@ public class TodosController : ControllerBase
 
         bool wasCreated = await _todoService.CreateAsync(todo);
 
-        // If creation failed, error happened on server/in database
         if (!wasCreated)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError);
+            return BadRequest();
         }
 
         TodoGetDto response = todo.MapToGetDto();
@@ -94,7 +93,7 @@ public class TodosController : ControllerBase
 
         if (!wasUpdateSuccessful)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError);
+            return BadRequest();
         }
 
         return NoContent();
@@ -112,6 +111,6 @@ public class TodosController : ControllerBase
 
         bool wasDeleted = await _todoService.DeleteAsync(todo);
 
-        return wasDeleted ? NoContent() : StatusCode(StatusCodes.Status500InternalServerError);
+        return wasDeleted ? NoContent() : BadRequest();
     }
 }
