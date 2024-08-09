@@ -103,5 +103,52 @@ public class TodosControllerTests
         // Assert
         result.StatusCode.Should().Be(404);
     }
-}
 
+    [Fact]
+    public async Task Create_ReturnsNotFound_WhenUserForTodoIsNotFound()
+    {
+        // Arrange
+        TodoCreateDto todoToCreate = new()
+        {
+            Title = "Todo title",
+            IsComplete = false,
+            UserId = 1
+        };
+        _userService.UserExistsAsync(Arg.Any<int>()).Returns(false);
+
+        // Act
+        var result = (NotFoundResult)await _sut.Create(todoToCreate);
+
+        // Assert
+        result.StatusCode.Should().Be(404);
+    }
+
+    [Fact]
+    public async Task Create_ReturnsCreatedAtActionResult_WhenCreateSucceeds()
+    {
+        // Arrange
+        TodoCreateDto todoToCreate = new()
+        {
+            Title = "Todo title",
+            IsComplete = false,
+            UserId = 1
+        };
+
+        TodoModel todo = todoToCreate.MapToTodoModel();
+
+        _userService.UserExistsAsync(todo.UserId).Returns(true);
+
+        _todoService.CreateAsync(Arg.Any<TodoModel>()).Returns(true);
+        //_todoService.CreateAsync(Arg.Do<TodoModel>(t => todo = t)).Returns(true);
+
+        TodoGetDto response = todo.MapToGetDto();
+
+        // Act
+        var result = (CreatedAtActionResult)await _sut.Create(todoToCreate);
+
+        // Assert
+        result.StatusCode.Should().Be(201);
+        result.Value.As<TodoGetDto>().Should().BeEquivalentTo(response);
+        result.RouteValues!["id"].Should().Be(response.Id);
+    }
+}
