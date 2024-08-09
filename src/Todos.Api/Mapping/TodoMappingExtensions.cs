@@ -5,7 +5,7 @@ namespace Todos.Api.Mapping;
 
 public static class TodoMappingExtensions
 {
-    public static TodoModel MapToTodoModel(this TodoCreateDto todo)
+    public static TodoModel ToTodoModel(this TodoCreateDto todo)
     {
         return new TodoModel()
         {
@@ -16,7 +16,7 @@ public static class TodoMappingExtensions
         };
     }
 
-    public static TodoModel MapUpdatedTodo(this TodoModel existingTodo, TodoUpdateDto updatedTodo)
+    public static TodoModel ToTodoModel(this TodoModel existingTodo, TodoUpdateDto updatedTodo)
     {
 
         existingTodo.Id = updatedTodo.Id;
@@ -27,7 +27,7 @@ public static class TodoMappingExtensions
         return existingTodo;
     }
 
-    public static TodoGetDto MapToGetDto(this TodoModel todo)
+    public static TodoGetDto ToGetDto(this TodoModel todo)
     {
         return new TodoGetDto()
         {

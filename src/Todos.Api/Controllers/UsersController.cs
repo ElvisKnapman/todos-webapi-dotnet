@@ -29,7 +29,7 @@ namespace Todos.Api.Controllers
         {
             IEnumerable<UserModel> users = await _userService.GetAllAsync();
             // Map to DTOs
-            IEnumerable<UserGetDto> response = users.Select(u => u.MapToGetDto());
+            IEnumerable<UserGetDto> response = users.Select(u => u.ToGetDto());
 
             return Ok(response);
         }
@@ -44,7 +44,7 @@ namespace Todos.Api.Controllers
                 return NotFound();
             }
 
-            UserGetDto response = user.MapToGetDto();
+            UserGetDto response = user.ToGetDto();
             return Ok(response);
         }
 
@@ -61,7 +61,7 @@ namespace Todos.Api.Controllers
             IEnumerable<TodoModel> todos = await _todoService.GetAllUserTodosAsync(id);
 
             // If user exists, map the todos to the response DTO
-            IEnumerable<TodoGetDto> response = todos.Select(t => t.MapToGetDto());
+            IEnumerable<TodoGetDto> response = todos.Select(t => t.ToGetDto());
 
             return Ok(response);
         }
@@ -71,7 +71,7 @@ namespace Todos.Api.Controllers
         {
             // TODO: Check if the username requested has been taken
 
-            UserModel user = userToCreate.MapToUserModel();
+            UserModel user = userToCreate.ToUserModel();
 
             bool wasCreated = await _userService.CreateAsync(user);
 
@@ -80,7 +80,7 @@ namespace Todos.Api.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
 
-            UserGetDto response = user.MapToGetDto();
+            UserGetDto response = user.ToGetDto();
 
             return CreatedAtAction(nameof(GetById), new { id = response.Id }, response);
         }
@@ -104,7 +104,7 @@ namespace Todos.Api.Controllers
             }
 
             // Map the DTO changes to the tracked entity
-            existingUser = existingUser.MapUserUpdates(updatedUser);
+            existingUser = existingUser.ToUserModel(updatedUser);
 
             // Do the update
             var wasUpdateSuccessful = await _userService.UpdateAsync(existingUser);

@@ -4,7 +4,7 @@ using Todos.Api.Models;
 namespace Todos.Api.Mapping;
 public static class UserMappingExtensions
 {
-    public static UserGetDto MapToGetDto(this UserModel userModel)
+    public static UserGetDto ToGetDto(this UserModel userModel)
     {
         return new UserGetDto()
         {
@@ -18,7 +18,7 @@ public static class UserMappingExtensions
         };
     }
 
-    public static UserModel MapToUserModel(this UserCreateDto dto)
+    public static UserModel ToUserModel(this UserCreateDto dto)
     {
         return new UserModel()
         {
@@ -30,7 +30,7 @@ public static class UserMappingExtensions
         };
     }
 
-    public static UserModel MapUserUpdates(this UserModel userModel, UserUpdateDto dto)
+    public static UserModel ToUserModel(this UserModel userModel, UserUpdateDto dto)
     {
         userModel.Id = dto.Id;
         userModel.FirstName = dto.FirstName;

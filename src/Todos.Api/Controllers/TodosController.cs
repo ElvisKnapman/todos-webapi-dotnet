@@ -25,7 +25,7 @@ public class TodosController : ControllerBase
     public async Task<IActionResult> GetAll()
     {
         IEnumerable<TodoModel> todos = await _todoService.GetAllAsync();
-        IEnumerable<TodoGetDto> response = todos.Select(t => t.MapToGetDto());
+        IEnumerable<TodoGetDto> response = todos.Select(t => t.ToGetDto());
 
         return Ok(response);
     }
@@ -40,14 +40,14 @@ public class TodosController : ControllerBase
             return NotFound();
         }
 
-        TodoGetDto response = todo.MapToGetDto();
+        TodoGetDto response = todo.ToGetDto();
         return Ok(response);
     }
 
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] TodoCreateDto todoToCreate)
     {
-        TodoModel todo = todoToCreate.MapToTodoModel();
+        TodoModel todo = todoToCreate.ToTodoModel();
 
         // Verify a user exists with the ID supplied in the todo DTO
         bool userExists = await _userService.UserExistsAsync(todo.UserId);
@@ -64,7 +64,7 @@ public class TodosController : ControllerBase
             return BadRequest();
         }
 
-        TodoGetDto response = todo.MapToGetDto();
+        TodoGetDto response = todo.ToGetDto();
 
         return CreatedAtAction(nameof(GetById), new { id = response.Id }, response);
     }
@@ -87,7 +87,7 @@ public class TodosController : ControllerBase
         }
 
         // Map the changes to the existing tracked entity
-        existingTodo = existingTodo.MapUpdatedTodo(updatedTodo);
+        existingTodo = existingTodo.ToTodoModel(updatedTodo);
 
         bool wasUpdateSuccessful = await _todoService.UpdateAsync(existingTodo);
 
