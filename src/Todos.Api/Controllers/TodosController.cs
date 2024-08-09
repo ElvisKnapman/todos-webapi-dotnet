@@ -96,7 +96,7 @@ public class TodosController : ControllerBase
             return BadRequest();
         }
 
-        return NoContent();
+        return Ok();
     }
 
     [HttpDelete("{id}")]
@@ -111,6 +111,6 @@ public class TodosController : ControllerBase
 
         bool wasDeleted = await _todoService.DeleteAsync(todo);
 
-        return wasDeleted ? NoContent() : BadRequest();
+        return wasDeleted ? Ok() : BadRequest();
     }
 }

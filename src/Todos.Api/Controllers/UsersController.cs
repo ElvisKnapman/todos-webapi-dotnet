@@ -112,11 +112,11 @@ namespace Todos.Api.Controllers
             // Check that the update was successful
             if (!wasUpdateSuccessful)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return BadRequest();
             }
 
             // Return the appropriate response
-            return NoContent();
+            return Ok();
         }
 
         [HttpDelete("{id}")]
@@ -131,7 +131,7 @@ namespace Todos.Api.Controllers
 
             bool wasDeleted = await _userService.DeleteAsync(user);
 
-            return wasDeleted ? NoContent() : StatusCode(StatusCodes.Status500InternalServerError);
+            return wasDeleted ? Ok() : BadRequest();
         }
     }
 }
