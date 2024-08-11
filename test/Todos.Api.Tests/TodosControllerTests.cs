@@ -22,7 +22,7 @@ public class TodosControllerTests
     }
 
     [Fact]
-    public async Task GetAll_ReturnsEmptyList_WhenNoTodosExist()
+    public async Task GetAll_Returns200OkWithEmptyList_WhenNoTodosExist()
     {
         // Arrange
         IEnumerable<TodoModel> todos = Enumerable.Empty<TodoModel>();
@@ -39,7 +39,7 @@ public class TodosControllerTests
     }
 
     [Fact]
-    public async Task GetAll_ReturnsListOfTodos_WhenTodosExist()
+    public async Task GetAll_Returns200OkWithListOfTodos_WhenTodosExist()
     {
         // Arrange
         List<TodoModel> todos = new()
@@ -69,7 +69,7 @@ public class TodosControllerTests
     }
 
     [Fact]
-    public async Task GetById_ReturnsOkAndObject_WhenTodoExists()
+    public async Task GetById_Returns200OkAndObject_WhenTodoExists()
     {
         // Arrange
         int id = 1;
@@ -91,7 +91,7 @@ public class TodosControllerTests
     }
 
     [Fact]
-    public async Task GetById_ReturnsNotFound_WhenTodoDoesntExist()
+    public async Task GetById_Returns404NotFound_WhenTodoDoesntExist()
     {
         // Arrange
         int id = 1;
@@ -105,7 +105,7 @@ public class TodosControllerTests
     }
 
     [Fact]
-    public async Task Create_ReturnsNotFound_WhenUserForTodoIsNotFound()
+    public async Task Create_Returns404NotFound_WhenUserForTodoIsNotFound()
     {
         // Arrange
         TodoCreateDto todoToCreate = new()
@@ -124,7 +124,7 @@ public class TodosControllerTests
     }
 
     [Fact]
-    public async Task Create_ReturnsCreatedAtActionResult_WhenCreateSucceeds()
+    public async Task Create_Returns201Created_WhenCreateSucceeds()
     {
         // Arrange
         TodoCreateDto todoToCreate = new()
@@ -150,5 +150,152 @@ public class TodosControllerTests
         result.StatusCode.Should().Be(201);
         result.Value.As<TodoGetDto>().Should().BeEquivalentTo(response);
         result.RouteValues!["id"].Should().Be(response.Id);
+    }
+
+    [Fact]
+    public async Task Update_Returns400BadRequest_WhenIdsDontMatch()
+    {
+        // Arrange
+        int id = 2;
+        TodoUpdateDto updatedTodo = new()
+        {
+            Id = 1,
+            Title = "A title",
+            IsComplete = true
+        };
+
+        // Act
+        var result = (BadRequestResult)await _sut.Update(id, updatedTodo);
+
+        // Assert
+        result.StatusCode.Should().Be(400);
+    }
+
+    [Fact]
+    public async Task Update_Returns404NotFound_WhenTodoDoesntExist()
+    {
+        // Arrange
+        int id = 1;
+        TodoUpdateDto updatedTodo = new()
+        {
+            Id = 1,
+            Title = "A title",
+            IsComplete = true
+        };
+        _todoService.GetByIdAsync(id).ReturnsNull();
+
+        // Act
+        var result = (NotFoundResult)await _sut.Update(id, updatedTodo);
+
+        // Assert
+        result.StatusCode.Should().Be(404);
+    }
+
+    [Fact]
+    public async Task Update_ShouldReturn400BadRequest_WhenUpdateFails()
+    {
+        // Arrange
+        int id = 1;
+        TodoUpdateDto updatedTodo = new()
+        {
+            Id = 1,
+            Title = "An updated title",
+            IsComplete = true
+        };
+        TodoModel existingTodo = new()
+        {
+            Id = 1,
+            Title = "Change me",
+            IsComplete = false
+        };
+        _todoService.GetByIdAsync(id).Returns(existingTodo);
+        existingTodo = existingTodo.MapUpdatedTodo(updatedTodo);
+        // This line below is the condition to check for result (failed update)
+        _todoService.UpdateAsync(existingTodo).Returns(false);
+
+        // Act
+        var result = (BadRequestResult)await _sut.Update(id, updatedTodo);
+
+        // Assert
+        result.StatusCode.Should().Be(400);
+    }
+
+    [Fact]
+    public async Task Update_ShouldReturn200Ok_WhenUpdateSucceeds()
+    {
+        // Arrange
+        int id = 1;
+        TodoUpdateDto updatedTodo = new()
+        {
+            Id = 1,
+            Title = "An updated title",
+            IsComplete = true
+        };
+        TodoModel existingTodo = new()
+        {
+            Id = 1,
+            Title = "Change me",
+            IsComplete = false
+        };
+        _todoService.GetByIdAsync(id).Returns(existingTodo);
+        existingTodo = existingTodo.MapUpdatedTodo(updatedTodo);
+        _todoService.UpdateAsync(existingTodo).Returns(true);
+
+        // Act
+        var result = (OkResult)await _sut.Update(id, updatedTodo);
+
+        // Assert
+        result.StatusCode.Should().Be(200);
+    }
+
+    [Fact]
+    public async Task Delete_ShouldReturn404NotFound_WhenTodoDoesntExist()
+    {
+        // Arrange
+        int id = 1;
+        _todoService.GetByIdAsync(id).ReturnsNull();
+
+        // Act
+        var result = (NotFoundResult)await _sut.Delete(id);
+
+        //Assert
+        result.StatusCode.Should().Be(404);
+    }
+
+    [Fact]
+    public async Task Delete_ShouldReturn400BadRequest_WhenDeleteFails()
+    {
+        // Arrange
+        int id = 1;
+        TodoModel todo = new();
+        _todoService.GetByIdAsync(id).Returns(todo);
+        _todoService.DeleteAsync(todo).Returns(false);
+
+        // Act
+        var result = (BadRequestResult)await _sut.Delete(id);
+
+        // Assert
+        result.StatusCode.Should().Be(400);
+    }
+
+    [Fact]
+    public async Task Delete_ShouldReturn200Ok_WhenDeleteSucceeds()
+    {
+        // Arrange
+        int id = 1;
+        TodoModel todo = new()
+        {
+            Id = 1,
+            Title = "Todo title",
+            IsComplete = false
+        };
+        _todoService.GetByIdAsync(id).Returns(todo);
+        _todoService.DeleteAsync(todo).Returns(true);
+
+        // Act 
+        var result = (OkResult)await _sut.Delete(id);
+
+        // Assert
+        result.StatusCode.Should().Be(200);
     }
 }
