@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
+using Todos.Api.Logging;
 using Todos.Api.Models;
 using Todos.Api.Repositories;
 using Todos.Api.Services;
@@ -10,12 +11,13 @@ namespace Todos.Api.Tests.Unit;
 public class UserServiceTests
 {
     private readonly IUserService _sut;
+    ILoggerAdapter<UserService> _logger = Substitute.For<ILoggerAdapter<UserService>>();
     private readonly IUserRepository _userRepository = Substitute.For<IUserRepository>();
     private readonly ITestOutputHelper _outputHelper;
     public UserServiceTests(ITestOutputHelper outputHelper)
     {
         _outputHelper = outputHelper;
-        _sut = new UserService(_userRepository);
+        _sut = new UserService(_logger, _userRepository);
     }
 
     [Fact]

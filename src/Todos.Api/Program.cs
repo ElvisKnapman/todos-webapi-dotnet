@@ -1,5 +1,6 @@
 using Newtonsoft.Json;
 using Todos.Api;
+using Todos.Api.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +27,7 @@ builder.Services.AddCors(options =>
 // Custom application services
 builder.Services.AddInjections();
 builder.Services.AddEFCore(builder);
+builder.Services.AddTransient(typeof(ILoggerAdapter<>), typeof(LoggerAdapter<>));
 
 var app = builder.Build();
 
