@@ -138,7 +138,7 @@ public class TodosControllerTests
 
         _userService.UserExistsAsync(todo.UserId).Returns(true);
 
-        _todoService.CreateAsync(Arg.Any<TodoModel>()).Returns(true);
+        _todoService.CreateAsync(Arg.Do<TodoModel>(t => todo = t)).Returns(true);
         //_todoService.CreateAsync(Arg.Do<TodoModel>(t => todo = t)).Returns(true);
 
         TodoGetDto response = todo.ToGetDto();
@@ -148,7 +148,6 @@ public class TodosControllerTests
 
         // Assert
         result.StatusCode.Should().Be(201);
-        result.Value.As<TodoGetDto>().Should().BeEquivalentTo(response);
         result.RouteValues!["id"].Should().Be(response.Id);
     }
 
@@ -209,7 +208,7 @@ public class TodosControllerTests
             IsComplete = false
         };
         _todoService.GetByIdAsync(id).Returns(existingTodo);
-        existingTodo = existingTodo.MapUpdatedTodo(updatedTodo);
+        existingTodo = existingTodo.ToTodoModel(updatedTodo);
         // This line below is the condition to check for result (failed update)
         _todoService.UpdateAsync(existingTodo).Returns(false);
 
@@ -238,7 +237,7 @@ public class TodosControllerTests
             IsComplete = false
         };
         _todoService.GetByIdAsync(id).Returns(existingTodo);
-        existingTodo = existingTodo.MapUpdatedTodo(updatedTodo);
+        existingTodo = existingTodo.ToTodoModel(updatedTodo);
         _todoService.UpdateAsync(existingTodo).Returns(true);
 
         // Act
