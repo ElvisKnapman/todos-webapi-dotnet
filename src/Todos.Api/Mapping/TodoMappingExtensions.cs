@@ -33,7 +33,10 @@ public static class TodoMappingExtensions
         {
             Id = todo.Id,
             Title = todo.Title,
-            IsComplete = todo.IsComplete
+            IsComplete = todo.IsComplete,
+            CreatedAt = todo.CreatedAt,
+            UpdatedAt = todo.UpdatedAt,
+            UserId = todo.UserId
         };
     }
 }

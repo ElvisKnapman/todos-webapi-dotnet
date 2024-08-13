@@ -13,4 +13,7 @@ public class TodoUpdateDto
 
     [Required]
     public bool IsComplete { get; set; }
+
+    [Required]
+    public DateTime CreatedAt { get; set; }
 }

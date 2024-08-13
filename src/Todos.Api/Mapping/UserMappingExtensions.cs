@@ -14,7 +14,8 @@ public static class UserMappingExtensions
             EmailAddress = userModel.EmailAddress,
             Username = userModel.Username,
             CreatedAt = userModel.CreatedAt,
-            UpdatedAt = userModel.UpdatedAt
+            UpdatedAt = userModel.UpdatedAt,
+            Todos = userModel.Todos.Select(x => x.ToGetDto()).ToList()
         };
     }
 

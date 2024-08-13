@@ -1,3 +1,5 @@
+using Todos.Api.DTOs.Todo;
+
 namespace Todos.Api.DTOs.User;
 public class UserGetDto
 {
@@ -8,4 +10,5 @@ public class UserGetDto
     public string Username { get; set; } = string.Empty;
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
+    public List<TodoGetDto> Todos { get; set; } = new();
 }
