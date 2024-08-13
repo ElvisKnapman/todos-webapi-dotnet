@@ -25,5 +25,5 @@ public class UserModel
 
     public DateTime UpdatedAt { get; set; } = DateTime.Now;
 
-    public List<TodoModel> Todos = new();
+    public List<TodoModel> Todos { get; set; } = new();
 }

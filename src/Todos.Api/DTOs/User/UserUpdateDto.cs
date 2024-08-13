@@ -26,4 +26,7 @@ public class UserUpdateDto
     [StringLength(150, MinimumLength = 1,
     ErrorMessage = "Username must be between 1 and 150 characters.")]
     public string UserName { get; set; } = string.Empty;
+
+    [Required]
+    public DateTime CreatedAt { get; set; }
 }
