@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
+using Todos.Api.Logging;
 using Todos.Api.Models;
 using Todos.Api.Repositories;
 using Todos.Api.Services;
@@ -14,6 +15,7 @@ public class TodoServiceTests : IDisposable
     //private readonly Mock<ITodoRepository> _todoRepositoryMock = new();
 
     // NSubstitute
+    private readonly ILoggerAdapter<TodoService> _logger = Substitute.For<ILoggerAdapter<TodoService>>();
     private readonly ITodoRepository _todoRepository = Substitute.For<ITodoRepository>();
     private readonly ITestOutputHelper _outputHelper;
 
@@ -24,7 +26,7 @@ public class TodoServiceTests : IDisposable
         //_sut = new TodoService(_todoRepositoryMock.Object);
 
         // NSubstitute
-        _sut = new TodoService(_todoRepository);
+        _sut = new TodoService(_logger, _todoRepository);
         _outputHelper = outputHelper;
     }
 
