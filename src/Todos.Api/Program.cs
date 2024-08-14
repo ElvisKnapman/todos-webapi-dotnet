@@ -40,8 +40,6 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors();
 
-app.UseRequestLogger();
-
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
