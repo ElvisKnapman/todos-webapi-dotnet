@@ -45,6 +45,21 @@ public static class ConfigurationExtensions
         {
             options.UseSqlServer(connectionString);
         });
+        return services;
+    }
+
+    public static IServiceCollection AddCorsPolicies(this IServiceCollection services)
+    {
+        // Add CORS
+        services.AddCors(options =>
+        {
+            options.AddDefaultPolicy(policy =>
+            {
+                policy.WithOrigins("http://localhost:4200");
+                policy.AllowAnyHeader();
+                policy.AllowAnyMethod();
+            });
+        });
 
         return services;
     }
