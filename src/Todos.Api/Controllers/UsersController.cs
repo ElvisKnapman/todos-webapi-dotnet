@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Todos.Api.DTOs.Todo;
 using Todos.Api.DTOs.User;
+using Todos.Api.Logging;
 using Todos.Api.Mapping;
 using Todos.Api.Models;
 using Todos.Api.Services;
@@ -11,11 +12,11 @@ namespace Todos.Api.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly ILogger<UsersController> _logger;
+        private readonly ILoggerAdapter<UsersController> _logger;
         private readonly IUserService _userService;
         private readonly ITodoService _todoService;
 
-        public UsersController(ILogger<UsersController> logger,
+        public UsersController(ILoggerAdapter<UsersController> logger,
         IUserService userService,
         ITodoService todoService)
         {

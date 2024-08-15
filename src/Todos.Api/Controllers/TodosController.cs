@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Todos.Api.DTOs.Todo;
+using Todos.Api.Logging;
 using Todos.Api.Mapping;
 using Todos.Api.Models;
 using Todos.Api.Services;
@@ -10,11 +11,11 @@ namespace Todos.Api.Controllers;
 [ApiController]
 public class TodosController : ControllerBase
 {
-    private readonly ILogger<TodosController> _logger;
+    private readonly ILoggerAdapter<TodosController> _logger;
     private readonly ITodoService _todoService;
     private readonly IUserService _userService;
 
-    public TodosController(ILogger<TodosController> logger, ITodoService todoService, IUserService userService)
+    public TodosController(ILoggerAdapter<TodosController> logger, ITodoService todoService, IUserService userService)
     {
         _logger = logger;
         _todoService = todoService;

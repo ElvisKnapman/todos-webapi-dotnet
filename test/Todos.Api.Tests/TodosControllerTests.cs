@@ -1,10 +1,10 @@
 ﻿using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
 using Todos.Api.Controllers;
 using Todos.Api.DTOs.Todo;
+using Todos.Api.Logging;
 using Todos.Api.Mapping;
 using Todos.Api.Models;
 using Todos.Api.Services;
@@ -15,7 +15,7 @@ public class TodosControllerTests
     private readonly TodosController _sut;
     private readonly ITodoService _todoService = Substitute.For<ITodoService>();
     private readonly IUserService _userService = Substitute.For<IUserService>();
-    private readonly ILogger<TodosController> _logger = Substitute.For<ILogger<TodosController>>();
+    private readonly ILoggerAdapter<TodosController> _logger = Substitute.For<ILoggerAdapter<TodosController>>();
     public TodosControllerTests()
     {
         _sut = new TodosController(_logger, _todoService, _userService);
