@@ -31,7 +31,7 @@ public class TodosController : ControllerBase
         return Ok(response);
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("{id:int}")]
     public async Task<IActionResult> GetById([FromRoute] int id)
     {
         TodoModel? todo = await _todoService.GetByIdAsync(id);
@@ -70,7 +70,7 @@ public class TodosController : ControllerBase
         return CreatedAtAction(nameof(GetById), new { id = response.Id }, response);
     }
 
-    [HttpPut("{id}")]
+    [HttpPut("{id:int}")]
     public async Task<IActionResult> Update([FromRoute] int id, [FromBody] TodoUpdateDto updatedTodo)
     {
         // Confirm route id matches the DTO id
@@ -100,7 +100,7 @@ public class TodosController : ControllerBase
         return Ok();
     }
 
-    [HttpDelete("{id}")]
+    [HttpDelete("{id:int}")]
     public async Task<IActionResult> Delete([FromRoute] int id)
     {
         TodoModel? todo = await _todoService.GetByIdAsync(id);
