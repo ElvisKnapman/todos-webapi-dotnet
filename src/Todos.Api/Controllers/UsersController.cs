@@ -35,7 +35,7 @@ namespace Todos.Api.Controllers
             return Ok(response);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
             UserModel? user = await _userService.GetByIdAsync(id);
@@ -49,7 +49,7 @@ namespace Todos.Api.Controllers
             return Ok(response);
         }
 
-        [HttpGet("{id}/todos")]
+        [HttpGet("{id:int}/todos")]
         public async Task<IActionResult> GetAllUserTodos([FromRoute] int id)
         {
             bool userExists = await _userService.UserExistsAsync(id);
@@ -86,7 +86,7 @@ namespace Todos.Api.Controllers
             return CreatedAtAction(nameof(GetById), new { id = response.Id }, response);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("{id:int}")]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UserUpdateDto updatedUser)
         {
             // Confirm route id matches DTO id
@@ -120,7 +120,7 @@ namespace Todos.Api.Controllers
             return Ok();
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
             UserModel? user = await _userService.GetByIdAsync(id);
