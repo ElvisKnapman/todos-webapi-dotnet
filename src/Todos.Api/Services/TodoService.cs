@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using Todos.Api.DTOs.Queries;
 using Todos.Api.Logging;
 using Todos.Api.Models;
 using Todos.Api.Repositories;
@@ -16,7 +17,7 @@ public class TodoService : ITodoService
         _todoRepository = todoRepository;
     }
 
-    public async Task<IEnumerable<TodoModel>> GetAllAsync()
+    public async Task<IEnumerable<TodoModel>> GetAllAsync(GetAllTodoQuery query)
     {
         _logger.LogInformation("Retrieving all todos");
 
@@ -24,7 +25,7 @@ public class TodoService : ITodoService
 
         try
         {
-            return await _todoRepository.GetAllAsync();
+            return await _todoRepository.GetAllAsync(query);
         }
         catch (Exception e)
         {
