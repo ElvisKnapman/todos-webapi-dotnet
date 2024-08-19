@@ -1,6 +1,6 @@
 ﻿namespace Todos.Api.DTOs.Queries;
 
-public class GetAllTodoQuery
+public class GetAllTodosQuery
 {
     public string? Title { get; set; } = null;
     public int PageNumber { get; set; } = 1;

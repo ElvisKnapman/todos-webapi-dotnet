@@ -17,7 +17,7 @@ public class TodoService : ITodoService
         _todoRepository = todoRepository;
     }
 
-    public async Task<IEnumerable<TodoModel>> GetAllAsync(GetAllTodoQuery query)
+    public async Task<IEnumerable<TodoModel>> GetAllAsync(GetAllTodosQuery query)
     {
         _logger.LogInformation("Retrieving all todos");
 

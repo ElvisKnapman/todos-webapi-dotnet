@@ -14,7 +14,7 @@ public class TodoRepository : ITodoRepository
         _context = context;
     }
 
-    public async Task<IEnumerable<TodoModel>> GetAllAsync(GetAllTodoQuery query)
+    public async Task<IEnumerable<TodoModel>> GetAllAsync(GetAllTodosQuery query)
     {
         // Start building the query expression
         var todos = _context.Todos.AsQueryable();

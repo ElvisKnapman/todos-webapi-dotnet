@@ -5,7 +5,7 @@ namespace Todos.Api.Repositories;
 
 public interface ITodoRepository
 {
-    Task<IEnumerable<TodoModel>> GetAllAsync(GetAllTodoQuery query);
+    Task<IEnumerable<TodoModel>> GetAllAsync(GetAllTodosQuery query);
     Task<TodoModel?> GetByIdAsync(int id);
     Task<IEnumerable<TodoModel>> GetAllUserTodosAsync(int id);
     Task<bool> DeleteAsync(TodoModel todo);

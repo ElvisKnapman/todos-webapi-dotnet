@@ -24,7 +24,7 @@ public class TodosController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAll([FromQuery] GetAllTodoQuery query)
+    public async Task<IActionResult> GetAll([FromQuery] GetAllTodosQuery query)
     {
         IEnumerable<TodoModel> todos = await _todoService.GetAllAsync(query);
         IEnumerable<TodoGetDto> response = todos.Select(t => t.ToGetDto());
