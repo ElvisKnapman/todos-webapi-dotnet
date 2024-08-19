@@ -24,8 +24,10 @@ public class TodoRepository : ITodoRepository
             todos = todos.Where(todo => todo.Title.Contains(query.Title));
         }
 
+        var skipNumber = (query.PageNumber - 1) * query.PageSize;
+
         // Finalize and execute the SQL instructions
-        return await todos.AsNoTracking().ToListAsync();
+        return await todos.Skip(skipNumber).Take(query.PageSize).AsNoTracking().ToListAsync();
     }
 
     public async Task<TodoModel?> GetByIdAsync(int id)

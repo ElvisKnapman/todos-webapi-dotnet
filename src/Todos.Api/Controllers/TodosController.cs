@@ -24,7 +24,7 @@ public class TodosController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAll([FromQuery] GetAllTodoQuery query, string sortOrder = "ASC")
+    public async Task<IActionResult> GetAll([FromQuery] GetAllTodoQuery query)
     {
         IEnumerable<TodoModel> todos = await _todoService.GetAllAsync(query);
         IEnumerable<TodoGetDto> response = todos.Select(t => t.ToGetDto());
