@@ -6,6 +6,7 @@ using Todos.Api;
 using Todos.Api.Data;
 using Todos.Api.Logging;
 using Todos.Api.Models;
+using Todos.Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,6 +34,7 @@ builder.Services.AddCors(options =>
 builder.Services.AddInjections();
 builder.Services.AddEFCore(builder);
 builder.Services.AddTransient(typeof(ILoggerAdapter<>), typeof(LoggerAdapter<>));
+builder.Services.AddScoped<ITokenService, TokenService>();
 
 builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
 {
