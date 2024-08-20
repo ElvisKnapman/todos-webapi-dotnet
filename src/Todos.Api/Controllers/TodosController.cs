@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Todos.Api.DTOs.Queries;
 using Todos.Api.DTOs.Todo;
 using Todos.Api.Logging;
 using Todos.Api.Mapping;
@@ -23,9 +24,9 @@ public class TodosController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAll()
+    public async Task<IActionResult> GetAll([FromQuery] GetAllTodosQuery query)
     {
-        IEnumerable<TodoModel> todos = await _todoService.GetAllAsync();
+        IEnumerable<TodoModel> todos = await _todoService.GetAllAsync(query);
         IEnumerable<TodoGetDto> response = todos.Select(t => t.ToGetDto());
 
         return Ok(response);

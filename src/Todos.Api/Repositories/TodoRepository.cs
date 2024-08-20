@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Todos.Api.Data;
+using Todos.Api.DTOs.Queries;
 using Todos.Api.Models;
 
 namespace Todos.Api.Repositories;
@@ -13,9 +14,20 @@ public class TodoRepository : ITodoRepository
         _context = context;
     }
 
-    public async Task<IEnumerable<TodoModel>> GetAllAsync()
+    public async Task<IEnumerable<TodoModel>> GetAllAsync(GetAllTodosQuery query)
     {
-        return await _context.Todos.AsNoTracking().ToListAsync();
+        // Start building the query expression
+        var todos = _context.Todos.AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(query.Title))
+        {
+            todos = todos.Where(todo => todo.Title.Contains(query.Title));
+        }
+
+        var skipNumber = (query.PageNumber - 1) * query.PageSize;
+
+        // Finalize and execute the SQL instructions
+        return await todos.Skip(skipNumber).Take(query.PageSize).AsNoTracking().ToListAsync();
     }
 
     public async Task<TodoModel?> GetByIdAsync(int id)
