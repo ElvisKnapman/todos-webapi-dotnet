@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Todos.Api.Models;
 
@@ -16,5 +17,21 @@ public class ApplicationDbContext : IdentityDbContext<AppUser>
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+
+        List<IdentityRole> roles = new()
+        {
+            new IdentityRole()
+            {
+                Name = "Admin",
+                NormalizedName = "ADMIN"
+            },
+            new IdentityRole()
+            {
+                Name = "User",
+                NormalizedName = "USER"
+            }
+        };
+
+        modelBuilder.Entity<IdentityRole>().HasData(roles);
     }
 }
