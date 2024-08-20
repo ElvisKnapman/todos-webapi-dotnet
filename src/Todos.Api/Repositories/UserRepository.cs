@@ -14,8 +14,7 @@ public class UserRepository : IUserRepository
 
     public async Task<IEnumerable<UserModel>> GetAllAsync()
     {
-        // Entity change tracking is not needed here
-        return await _context.UserProfiles.Include(t => t.Todos).ToListAsync();
+        return await _context.UserProfiles.Include(t => t.Todos).AsNoTracking().ToListAsync();
     }
 
     public async Task<UserModel?> GetByIdAsync(int id)

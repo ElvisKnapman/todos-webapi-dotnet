@@ -12,7 +12,7 @@ public class ApplicationDbContext : IdentityDbContext<AppUser>
     }
 
     public DbSet<TodoModel> Todos { get; set; }
-    public DbSet<UserModel> Users { get; set; }
+    public DbSet<UserModel> UserProfiles { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Todos.Api.DTOs.Account;
 using Todos.Api.Models;
+using Todos.Api.Services;
 
 namespace Todos.Api.Controllers;
 
@@ -9,9 +10,11 @@ namespace Todos.Api.Controllers;
 [ApiController]
 public class AccountsController : ControllerBase
 {
+    private readonly ITokenService _tokenService;
     private readonly UserManager<AppUser> _userManager;
-    public AccountsController(UserManager<AppUser> userManager)
+    public AccountsController(ITokenService tokenService, UserManager<AppUser> userManager)
     {
+        _tokenService = tokenService;
         _userManager = userManager;
     }
 
@@ -34,7 +37,14 @@ public class AccountsController : ControllerBase
 
                 if (roleResult.Succeeded)
                 {
-                    return Ok("User successfully created.");
+                    var newUser = new NewUserDto()
+                    {
+                        UserName = appUser.UserName,
+                        Email = appUser.Email,
+                        Token = _tokenService.CreateToken(appUser)
+                    };
+
+                    return Ok(newUser);
                 }
 
                 return BadRequest(roleResult.Errors);
