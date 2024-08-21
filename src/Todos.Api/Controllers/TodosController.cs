@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Todos.Api.DTOs.Queries;
 using Todos.Api.DTOs.Todo;
 using Todos.Api.Logging;
@@ -10,6 +11,7 @@ namespace Todos.Api.Controllers;
 
 [Route("api/todos")]
 [ApiController]
+[Authorize]
 public class TodosController : ControllerBase
 {
     private readonly ILoggerAdapter<TodosController> _logger;

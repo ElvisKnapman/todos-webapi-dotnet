@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Todos.Api.Models;
 
-[Table("Users")]
+[Table("UserProfiles")]
 public class UserModel
 {
     [Key]
