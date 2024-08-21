@@ -27,11 +27,6 @@ public class AccountsController : ControllerBase
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
     {
-        if (!ModelState.IsValid)
-        {
-            return BadRequest("Hey teddy, this code doesn't run and return because model validation runs right after model binding and before the action method executes");
-        }
-
         var user = await _userManager.Users.FirstOrDefaultAsync(user => user.UserName == loginDto.Username);
 
         if (user is null)
