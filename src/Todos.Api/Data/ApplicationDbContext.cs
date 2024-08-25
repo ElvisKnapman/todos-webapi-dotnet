@@ -33,5 +33,7 @@ public class ApplicationDbContext : IdentityDbContext<AppUser>
         };
 
         modelBuilder.Entity<IdentityRole>().HasData(roles);
+
+        modelBuilder.SeedTodoAndUserData();
     }
 }

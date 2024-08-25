@@ -3,28 +3,16 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace Todos.Api.Migrations
 {
     /// <inheritdoc />
-    public partial class Identity : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Todos_Users_UserId",
-                table: "Todos");
-
-            migrationBuilder.AlterColumn<int>(
-                name: "UserId",
-                table: "Todos",
-                type: "int",
-                nullable: false,
-                defaultValue: 0,
-                oldClrType: typeof(int),
-                oldType: "int",
-                oldNullable: true);
-
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
@@ -62,6 +50,24 @@ namespace Todos.Api.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserProfiles",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FirstName = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
+                    EmailAddress = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    Username = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserProfiles", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -170,6 +176,62 @@ namespace Todos.Api.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Todos",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
+                    IsComplete = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Todos", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Todos_UserProfiles_UserId",
+                        column: x => x.UserId,
+                        principalTable: "UserProfiles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[,]
+                {
+                    { "77271d40-6978-4f1f-918c-c505744cc4d7", null, "Admin", "ADMIN" },
+                    { "b2d11fab-789a-463e-ac0e-9dabd927b31b", null, "User", "USER" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "UserProfiles",
+                columns: new[] { "Id", "CreatedAt", "EmailAddress", "FirstName", "LastName", "UpdatedAt", "Username" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(2024, 8, 25, 16, 34, 11, 117, DateTimeKind.Local).AddTicks(6988), "elvis@test.com", "Elvis", "Knapman", new DateTime(2024, 8, 25, 16, 34, 11, 117, DateTimeKind.Local).AddTicks(7030), "elvis" },
+                    { 2, new DateTime(2024, 8, 25, 16, 34, 11, 117, DateTimeKind.Local).AddTicks(7036), "nick@test.com", "Nick", "Patterson", new DateTime(2024, 8, 25, 16, 34, 11, 117, DateTimeKind.Local).AddTicks(7037), "nick" },
+                    { 3, new DateTime(2024, 8, 25, 16, 34, 11, 117, DateTimeKind.Local).AddTicks(7039), "jane@example.com", "Jane", "Doe", new DateTime(2024, 8, 25, 16, 34, 11, 117, DateTimeKind.Local).AddTicks(7040), "jane" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Todos",
+                columns: new[] { "Id", "CreatedAt", "IsComplete", "Title", "UpdatedAt", "UserId" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(2024, 8, 25, 16, 34, 11, 117, DateTimeKind.Local).AddTicks(7043), false, "A todo", new DateTime(2024, 8, 25, 16, 34, 11, 117, DateTimeKind.Local).AddTicks(7044), 1 },
+                    { 2, new DateTime(2024, 8, 25, 16, 34, 11, 117, DateTimeKind.Local).AddTicks(7050), false, "Wash car", new DateTime(2024, 8, 25, 16, 34, 11, 117, DateTimeKind.Local).AddTicks(7051), 1 },
+                    { 3, new DateTime(2024, 8, 25, 16, 34, 11, 117, DateTimeKind.Local).AddTicks(7053), false, "Go to the store", new DateTime(2024, 8, 25, 16, 34, 11, 117, DateTimeKind.Local).AddTicks(7054), 1 },
+                    { 4, new DateTime(2024, 8, 25, 16, 34, 11, 117, DateTimeKind.Local).AddTicks(7055), false, "Take out the trash", new DateTime(2024, 8, 25, 16, 34, 11, 117, DateTimeKind.Local).AddTicks(7056), 1 },
+                    { 5, new DateTime(2024, 8, 25, 16, 34, 11, 117, DateTimeKind.Local).AddTicks(7058), false, "Water the grass", new DateTime(2024, 8, 25, 16, 34, 11, 117, DateTimeKind.Local).AddTicks(7059), 1 },
+                    { 6, new DateTime(2024, 8, 25, 16, 34, 11, 117, DateTimeKind.Local).AddTicks(7063), false, "Nick's first todo", new DateTime(2024, 8, 25, 16, 34, 11, 117, DateTimeKind.Local).AddTicks(7064), 2 },
+                    { 7, new DateTime(2024, 8, 25, 16, 34, 11, 117, DateTimeKind.Local).AddTicks(7066), false, "Clean room", new DateTime(2024, 8, 25, 16, 34, 11, 117, DateTimeKind.Local).AddTicks(7067), 2 }
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -209,22 +271,15 @@ namespace Todos.Api.Migrations
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
 
-            migrationBuilder.AddForeignKey(
-                name: "FK_Todos_Users_UserId",
+            migrationBuilder.CreateIndex(
+                name: "IX_Todos_UserId",
                 table: "Todos",
-                column: "UserId",
-                principalTable: "Users",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+                column: "UserId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Todos_Users_UserId",
-                table: "Todos");
-
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -241,25 +296,16 @@ namespace Todos.Api.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Todos");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
 
-            migrationBuilder.AlterColumn<int>(
-                name: "UserId",
-                table: "Todos",
-                type: "int",
-                nullable: true,
-                oldClrType: typeof(int),
-                oldType: "int");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Todos_Users_UserId",
-                table: "Todos",
-                column: "UserId",
-                principalTable: "Users",
-                principalColumn: "Id");
+            migrationBuilder.DropTable(
+                name: "UserProfiles");
         }
     }
 }

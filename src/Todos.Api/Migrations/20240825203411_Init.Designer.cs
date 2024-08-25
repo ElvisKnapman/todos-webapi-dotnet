@@ -12,8 +12,8 @@ using Todos.Api.Data;
 namespace Todos.Api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240820175944_RenameUsersToUserProfiles")]
-    partial class RenameUsersToUserProfiles
+    [Migration("20240825203411_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -54,13 +54,13 @@ namespace Todos.Api.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "55079ca3-1b51-41a3-ac67-4d1b4176cab0",
+                            Id = "77271d40-6978-4f1f-918c-c505744cc4d7",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "35b7ee88-fe8d-424f-96cf-8d40b8fd723b",
+                            Id = "b2d11fab-789a-463e-ac0e-9dabd927b31b",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -267,6 +267,71 @@ namespace Todos.Api.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Todos");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedAt = new DateTime(2024, 8, 25, 16, 34, 11, 117, DateTimeKind.Local).AddTicks(7043),
+                            IsComplete = false,
+                            Title = "A todo",
+                            UpdatedAt = new DateTime(2024, 8, 25, 16, 34, 11, 117, DateTimeKind.Local).AddTicks(7044),
+                            UserId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedAt = new DateTime(2024, 8, 25, 16, 34, 11, 117, DateTimeKind.Local).AddTicks(7050),
+                            IsComplete = false,
+                            Title = "Wash car",
+                            UpdatedAt = new DateTime(2024, 8, 25, 16, 34, 11, 117, DateTimeKind.Local).AddTicks(7051),
+                            UserId = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CreatedAt = new DateTime(2024, 8, 25, 16, 34, 11, 117, DateTimeKind.Local).AddTicks(7053),
+                            IsComplete = false,
+                            Title = "Go to the store",
+                            UpdatedAt = new DateTime(2024, 8, 25, 16, 34, 11, 117, DateTimeKind.Local).AddTicks(7054),
+                            UserId = 1
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CreatedAt = new DateTime(2024, 8, 25, 16, 34, 11, 117, DateTimeKind.Local).AddTicks(7055),
+                            IsComplete = false,
+                            Title = "Take out the trash",
+                            UpdatedAt = new DateTime(2024, 8, 25, 16, 34, 11, 117, DateTimeKind.Local).AddTicks(7056),
+                            UserId = 1
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CreatedAt = new DateTime(2024, 8, 25, 16, 34, 11, 117, DateTimeKind.Local).AddTicks(7058),
+                            IsComplete = false,
+                            Title = "Water the grass",
+                            UpdatedAt = new DateTime(2024, 8, 25, 16, 34, 11, 117, DateTimeKind.Local).AddTicks(7059),
+                            UserId = 1
+                        },
+                        new
+                        {
+                            Id = 6,
+                            CreatedAt = new DateTime(2024, 8, 25, 16, 34, 11, 117, DateTimeKind.Local).AddTicks(7063),
+                            IsComplete = false,
+                            Title = "Nick's first todo",
+                            UpdatedAt = new DateTime(2024, 8, 25, 16, 34, 11, 117, DateTimeKind.Local).AddTicks(7064),
+                            UserId = 2
+                        },
+                        new
+                        {
+                            Id = 7,
+                            CreatedAt = new DateTime(2024, 8, 25, 16, 34, 11, 117, DateTimeKind.Local).AddTicks(7066),
+                            IsComplete = false,
+                            Title = "Clean room",
+                            UpdatedAt = new DateTime(2024, 8, 25, 16, 34, 11, 117, DateTimeKind.Local).AddTicks(7067),
+                            UserId = 2
+                        });
                 });
 
             modelBuilder.Entity("Todos.Api.Models.UserModel", b =>
@@ -306,6 +371,38 @@ namespace Todos.Api.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("UserProfiles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedAt = new DateTime(2024, 8, 25, 16, 34, 11, 117, DateTimeKind.Local).AddTicks(6988),
+                            EmailAddress = "elvis@test.com",
+                            FirstName = "Elvis",
+                            LastName = "Knapman",
+                            UpdatedAt = new DateTime(2024, 8, 25, 16, 34, 11, 117, DateTimeKind.Local).AddTicks(7030),
+                            Username = "elvis"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedAt = new DateTime(2024, 8, 25, 16, 34, 11, 117, DateTimeKind.Local).AddTicks(7036),
+                            EmailAddress = "nick@test.com",
+                            FirstName = "Nick",
+                            LastName = "Patterson",
+                            UpdatedAt = new DateTime(2024, 8, 25, 16, 34, 11, 117, DateTimeKind.Local).AddTicks(7037),
+                            Username = "nick"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CreatedAt = new DateTime(2024, 8, 25, 16, 34, 11, 117, DateTimeKind.Local).AddTicks(7039),
+                            EmailAddress = "jane@example.com",
+                            FirstName = "Jane",
+                            LastName = "Doe",
+                            UpdatedAt = new DateTime(2024, 8, 25, 16, 34, 11, 117, DateTimeKind.Local).AddTicks(7040),
+                            Username = "jane"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
