@@ -52,8 +52,7 @@ public class TodosController : ControllerBase
     public async Task<IActionResult> Create([FromBody] TodoCreateDto todoToCreate)
     {
         TodoModel todo = todoToCreate.ToTodoModel();
-
-        // Verify a user exists with the ID supplied in the todo DTO
+        
         bool userExists = await _userService.UserExistsAsync(todo.UserId);
 
         if (!userExists)
@@ -81,8 +80,7 @@ public class TodosController : ControllerBase
         {
             return BadRequest();
         }
-
-        // Get The existing entity
+        
         TodoModel? existingTodo = await _todoService.GetByIdAsync(id);
 
         if (existingTodo is null)
