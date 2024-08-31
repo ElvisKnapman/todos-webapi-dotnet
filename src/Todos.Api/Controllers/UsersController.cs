@@ -60,8 +60,6 @@ namespace Todos.Api.Controllers
             }
 
             IEnumerable<TodoModel> todos = await _todoService.GetAllUserTodosAsync(id);
-
-            // If user exists, map the todos to the response DTO
             IEnumerable<TodoGetDto> response = todos.Select(t => t.ToGetDto());
 
             return Ok(response);
@@ -94,11 +92,9 @@ namespace Todos.Api.Controllers
             {
                 return BadRequest();
             }
-
-            // Get existing User
+            
             UserModel? existingUser = await _userService.GetByIdAsync(id);
-
-            // Return not found if null
+            
             if (existingUser is null)
             {
                 return NotFound();
@@ -106,17 +102,14 @@ namespace Todos.Api.Controllers
 
             // Map the DTO changes to the tracked entity
             existingUser = existingUser.ToUserModel(updatedUser);
-
-            // Do the update
+            
             var wasUpdateSuccessful = await _userService.UpdateAsync(existingUser);
 
-            // Check that the update was successful
             if (!wasUpdateSuccessful)
             {
                 return BadRequest();
             }
 
-            // Return the appropriate response
             return Ok();
         }
 
